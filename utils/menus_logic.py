@@ -3,6 +3,7 @@
 
 import json
 import time
+import os
 from models.stateMachine import State
 from models.sighting import Sighting
 
@@ -14,7 +15,7 @@ def Cleantml() :
 
 # Menu principal
 def MainMenu(StateMachine: State):
-    options = ["Registrar Avistamiento", "Mostrar Avistamientos", "Buscar por especie", "Buscar por fecha", "Salir"]
+    options = ["Registrar Avistamiento", "Mostrar Avistamientos", "Buscar por especie", "Buscar por fecha", "Limpiar Registro", "Salir"]
 
     # Limpiar
     Cleantml()
@@ -49,6 +50,8 @@ def MainMenu(StateMachine: State):
             case 3:
                 StateMachine = State.SEARCH_BY_DATE
             case 4:
+                StateMachine = State.CLEAN_REGISTER
+            case 5:
                 StateMachine = State.EXIT
 
     return StateMachine
@@ -145,9 +148,7 @@ def SearchSpeciesSightings(SightingList, StateMachine: State):
 
     return ShowSightings(matches, StateMachine)
 
-
 #Buscar Avistameintos por fecha
-
 def SearchDateSightings(SightingList, StateMachine: State): 
 
     # Limpiar
@@ -173,4 +174,37 @@ def SearchDateSightings(SightingList, StateMachine: State):
         return State.MAIN_MENU
 
     return ShowSightings(matches, StateMachine)
+
+# Limpiar el Registro de Avistamientos
+def CleanRegister(SightingList, StateMachine: State):
+
+    path = "sightings.json"
+
+    # Comprobar que la lista tenga datos
+    if not os.path.exists(path) or not SightingList :
+        print("No se encontro ningun registro")
+        time.sleep(2)
+
+        StateMachine = State.MAIN_MENU
+        return StateMachine
+
+    # Confirmar
+    print("Desea Eliminar El Registro De Avistamientos?")
+    option = input("[S/n]")
+    option.lower()
+
+    if option == 's' :
+        print("Limpiando los datos")
+        time.sleep(2)
+        SightingList.clear()
+        # Eliminar Archivo 
+        os.remove(path)
+    
+    elif option == 'n' :
+        print("Se mantendra el registro")
+        time.sleep(2)
+
+    StateMachine = State.MAIN_MENU
+    return StateMachine
+    
 

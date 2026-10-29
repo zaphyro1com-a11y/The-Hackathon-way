@@ -8,4 +8,5 @@ class State(enum.Enum):
     SHOW_SIGHTINGS = 3
     SEARCH_BY_SPECIES = 4
     SEARCH_BY_DATE = 5
-    EXIT = 6
+    CLEAN_REGISTER = 6
+    EXIT = 7

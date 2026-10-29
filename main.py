@@ -65,6 +65,9 @@ def main() :
             case State.SEARCH_BY_DATE:
                 # Lógica para buscar por fecha
                 StateMachine = menus_logic.SearchDateSightings(SightingList, StateMachine)
+            case State.CLEAN_REGISTER:
+                # Lógica para limpiar los registros de avistamientos
+                StateMachine = menus_logic.CleanRegister(SightingList, StateMachine)
             case State.EXIT:
                 break  # Salir del bucle principal y terminar el programa
 
